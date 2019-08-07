@@ -7,7 +7,7 @@ import org.apache.spark.sql.SparkSession
 object Main extends SparkTest {
 
   def main(args: Array[String]): Unit = {
-    df.printSchema()
+    df.groupBy()
   }
 
 }

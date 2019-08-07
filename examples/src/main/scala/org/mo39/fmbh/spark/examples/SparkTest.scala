@@ -5,7 +5,7 @@ import org.apache.spark.sql.types.{DataTypes, DecimalType}
 
 trait SparkTest {
 
-  val spark: SparkSession = SparkSession
+  lazy val spark: SparkSession = SparkSession
     .builder()
     .master(master = "local")
     .appName(name = "Test App")
@@ -13,7 +13,6 @@ trait SparkTest {
 
   lazy val df: DataFrame = {
     import spark.implicits._
-
     val df = Seq(
       (
         "fmbh",
@@ -30,23 +29,20 @@ trait SparkTest {
         "12",
         "3.1415926",
         null
-      )
-    ).toDF(colNames =
-      "String",
-      "Binary",
-      "Boolean",
-      "Date",
-      "Timestamp",
-      "CalendarInterval",
-      "Double",
-      "Float",
-      "Byte",
-      "Integer",
-      "Long",
-      "Short",
-      "Decimal",
-      "Null"
-    )
+      )).toDF(colNames = "String",
+              "Binary",
+              "Boolean",
+              "Date",
+              "Timestamp",
+              "CalendarInterval",
+              "Double",
+              "Float",
+              "Byte",
+              "Integer",
+              "Long",
+              "Short",
+              "Decimal",
+              "Null")
     val resultDF = df.select(
       df("String").cast(DataTypes.StringType),
       df("Binary").cast(DataTypes.BinaryType),
@@ -65,7 +61,6 @@ trait SparkTest {
     )
 
     /*
-     * // resultDF.printSchema()
      * root
      * |-- String: string (nullable = true)
      * |-- Binary: binary (nullable = true)
@@ -81,14 +76,17 @@ trait SparkTest {
      * |-- Short: short (nullable = true)
      * |-- Decimal: decimal(10,0) (nullable = true)
      * |-- Null: null (nullable = true)
-     *
-     * // resultDF.show()
+     */
+    // resultDF.printSchema()
+
+    /*
      * +------+-------------+-------+----------+-------------------+--------------------+------+------+----+-------+-----+-----+-------+----+
      * |String|       Binary|Boolean|      Date|          Timestamp|    CalendarInterval|Double| Float|Byte|Integer| Long|Short|Decimal|Null|
      * +------+-------------+-------+----------+-------------------+--------------------+------+------+----+-------+-----+-----+-------+----+
      * |  fmbh|[66 6D 62 68]|   true|2019-02-15|2019-02-15 16:39:39|interval -3 years...|1.0E-8|1.0E-4|   1|    123|12345|   12|      3|null|
      * +------+-------------+-------+----------+-------------------+--------------------+------+------+----+-------+-----+-----+-------+----+
      */
+    // resultDF.show()
     resultDF
   }
 
